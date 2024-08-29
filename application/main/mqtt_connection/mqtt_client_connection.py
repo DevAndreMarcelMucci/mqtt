@@ -7,6 +7,7 @@ class MqttClientConnection:
         self.__port = port
         self.__client_name = client_name
         self.__keepalive = keepalive
+        self.__mqtt_client = None
 
     def start_connection(self):
         mqtt_client = mqtt.Client(self.__client_name, protocol=mqtt.MQTTv311)
@@ -17,4 +18,13 @@ class MqttClientConnection:
         mqtt_client.on_message = on_message
 
         mqtt_client.connect(host=self.__broker_ip, port=self.__port, keepalive=self.__keepalive)
-        mqtt_client.loop_start()
+        self.__mqtt_client = mqtt_client
+        self.__mqtt_client.loop_start()
+
+    def end_connection(self):
+        try:
+            self.__mqtt_client.loop_stop()
+            self.__mqtt_client.disconnect()
+            return True
+        except:
+            return False
