@@ -1,7 +1,8 @@
 mqtt_broker_configs = {
-    "HOST": "localhost",
+    "HOST": "test.mosquitto.org",       #"HOST": "localhost",
     "PORT": 1883,
     "CLIENT_NAME": "client_project",
     "KEEPALIVE": 60,
-    "TOPIC": "/messages"
+    "TOPIC": "DHT_TEMP",                #"TOPIC": "/messages"
+    #"TOPIC": "DHT_HUMID"
 }
