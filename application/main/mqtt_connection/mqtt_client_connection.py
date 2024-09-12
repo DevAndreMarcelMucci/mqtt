@@ -1,5 +1,5 @@
 import paho.mqtt.client as mqtt
-from .callbacks import on_connect, on_subscribe, on_message
+from .callbacks import on_connect, on_subscribe, on_message, on_disconnect
 
 class MqttClientConnection:
     def __init__(self, broker_ip: str, port: int, client_name: str, keepalive=60):
@@ -15,9 +15,13 @@ class MqttClientConnection:
         #callbacks
         mqtt_client.on_connect = on_connect
         mqtt_client.on_subscribe = on_subscribe
+        mqtt_client.on_disconnect = on_disconnect
         mqtt_client.on_message = on_message
 
-        mqtt_client.connect(host=self.__broker_ip, port=self.__port, keepalive=self.__keepalive)
+        # Verificando se o cliente já está conectado antes de tentar conectar
+        if not mqtt_client.is_connected():
+            mqtt_client.connect(host=self.__broker_ip, port=self.__port, keepalive=self.__keepalive)
+            
         self.__mqtt_client = mqtt_client
         self.__mqtt_client.loop_start()
 

@@ -1,4 +1,6 @@
 from application.configs.broker_configs import mqtt_broker_configs
+# from app.models import MqttData
+
 
 def on_connect(client, userdata, flags, rc):
     if rc == 0:
@@ -16,4 +18,8 @@ def on_message(client, userdata, message):
     print(client)
     print(message.payload)
     
-    
+# Função de callback para quando a conexão for perdida
+def on_disconnect(client, userdata, flags, rc):
+    if rc != 0:
+        print("Desconexão inesperada. Tentando reconectar...")
+        client.reconnect()
